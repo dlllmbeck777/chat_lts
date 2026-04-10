@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: chat_db
+    restart: always
+    environment:
+      POSTGRES_USER: chat_user
+      POSTGRES_PASSWORD: chat_password
+      POSTGRES_DB: chat_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - chat_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chat_backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "3001:3000"
+    environment:
+      - DATABASE_URL=postgresql://chat_user:chat_password@db:5432/chat_db
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - chat_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chat_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    networks:
+      - chat_network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  chat_network:
+    driver: bridge

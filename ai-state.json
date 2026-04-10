@@ -1,0 +1,42 @@
+{
+    "project_name": "Private Chat (chat_lts)",
+    "version": "1.0.0",
+    "status": "in_progress",
+    "current_phase": "Phase 1 - Initial Setup",
+    "last_updated": "2026-04-10T17:15:00Z",
+    "tasks": [
+        {
+            "id": "T-1",
+            "title": "Create project repositories and initial structures",
+            "status": "completed"
+        },
+        {
+            "id": "T-2",
+            "title": "Initialize NestJS Backend",
+            "status": "pending",
+            "dependencies": [
+                "T-1"
+            ]
+        },
+        {
+            "id": "T-3",
+            "title": "Initialize Next.js Frontend",
+            "status": "pending",
+            "dependencies": [
+                "T-1"
+            ]
+        },
+        {
+            "id": "T-4",
+            "title": "Setup Docker Compose (PostgreSQL)",
+            "status": "pending",
+            "dependencies": [
+                "T-2"
+            ]
+        }
+    ],
+    "context": {
+        "repository": "git@github.com:dlllmbeck777/chat_lts.git",
+        "specification": "private_chat_tz_hardware.md"
+    }
+}
